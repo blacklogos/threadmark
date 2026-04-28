@@ -1,93 +1,431 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Threads Preview</title>
+  <title>Threadmark — Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-color: #ffffff;
-      --text-color: #333333;
-      --border-color: #e9ecef;
-      --muted-color: #6c757d;
-      --link-color: #0095f6;
-      --button-bg: #0095f6;
-      --button-hover: #0056b3;
-      --header-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-      --body-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      --bg:          #09090d;
+      --surface:     #111117;
+      --surface-hi:  #16161e;
+      --border:      #1e1e2a;
+      --border-dim:  #161620;
+      --accent:      #f0b429;
+      --acc-a10:     rgba(240,180,41,.10);
+      --acc-a20:     rgba(240,180,41,.20);
+      --text:        #e8e4db;
+      --text-soft:   #a09c98;
+      --muted:       #5e5a6a;
+      --link:        #7eb8f7;
+      --ok:          #4ade80;
+      --err:         #f87171;
+      --font:        'Plus Jakarta Sans', -apple-system, sans-serif;
+      --brand-font:  'Syne', var(--font);
+      --bar-h:       50px;
+      --max-w:       660px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: var(--body-font); max-width: 680px; margin: 0 auto; padding: 30px 20px; line-height: 1.6; background-color: var(--bg-color); color: var(--text-color); }
-    a { color: var(--link-color); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .author-header { display: flex; align-items: center; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
-    .author-image-container { position: relative; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; margin-right: 20px; }
-    .author-image { width: 100%; height: 100%; object-fit: cover; display: block; position: relative; z-index: 2; }
-    .author-initials { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px; text-transform: uppercase; z-index: 1; }
-    .author-info { flex-grow: 1; }
-    .author-name { font-family: var(--header-font); font-size: 1.5rem; font-weight: bold; margin-bottom: 5px; }
-    .author-username { color: var(--muted-color); font-size: 1rem; word-break: normal; overflow-wrap: break-word; max-width: 100%; display: inline-block; }
-    .thread-info { color: var(--muted-color); font-size: 0.9rem; margin-top: 5px; }
-    .article { font-size: 1.05rem; line-height: 1.7; white-space: pre-wrap; word-break: break-word; margin-bottom: 20px; }
-    .article br { display: block; margin: 10px 0; content: ""; }
-    .post-image { max-width: 100%; height: auto; border-radius: 8px; margin: 15px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    .post-link { display: block; margin: 15px 0; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 8px; text-decoration: none; color: var(--text-color); background-color: #f8f9fa; transition: all 0.2s ease; font-size: 0.95em; word-break: break-all; }
-    .post-link:hover { background-color: #f1f3f5; border-color: #dee2e6; text-decoration: none; transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    /* New actions toolbar */
-    .actions-bar { position: sticky; bottom: 0; z-index: 5; background: linear-gradient(180deg, rgba(255,255,255,0), var(--bg-color) 30%); padding: 10px 0 0; border-top: 1px solid var(--border-color); margin-top: 20px; }
-    .actions-primary, .actions-secondary, .actions-toggle { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-    .btn { padding: 6px 10px; font-size: 0.9rem; border-radius: 6px; border: 1px solid var(--border-color); background: #f7f7f9; color: var(--text-color); cursor: pointer; transition: background 0.2s, border-color 0.2s; }
-    .btn:hover { background: #eef1f5; }
-    .btn.primary { background: var(--button-bg); color: #fff; border-color: var(--button-bg); }
-    .btn.primary:hover { background: var(--button-hover); border-color: var(--button-hover); }
-    @media (max-width: 600px) { .actions-primary, .actions-secondary, .actions-toggle { gap: 6px; } .btn { padding: 6px 8px; } }
-    .toast { position: fixed; bottom: 20px; right: 20px; background-color: #28a745; color: white; padding: 10px 20px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); animation: fadeOut 2s forwards; }
-    @keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; } }
-    @media print { .actions-bar { display: none; } }
-    .img-fallback { display: inline-block; padding: 12px; border: 1px dashed var(--border-color); border-radius: 6px; color: var(--muted-color); font-size: 0.9rem; }
-    .img-actions { margin-top: 6px; display: flex; gap: 8px; }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* subtle ambient gradient — adds depth without noise */
+    html::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 40% at 70% 0%, rgba(240,180,41,.04) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 0% 100%, rgba(100,140,220,.03) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      padding-top: var(--bar-h);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ─── Toolbar ───────────────────────── */
+    .toolbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--bar-h);
+      background: rgba(9,9,13,.88);
+      backdrop-filter: blur(14px) saturate(1.4);
+      -webkit-backdrop-filter: blur(14px) saturate(1.4);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      gap: 2px;
+      z-index: 100;
+    }
+
+    .tb-brand {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+    .tb-logo {
+      width: 22px; height: 22px;
+      background: var(--accent);
+      border-radius: 5px;
+      display: grid; place-items: center;
+    }
+    .tb-logo svg { width: 11px; height: 11px; color: #1a1200; }
+    .tb-name {
+      font-family: var(--brand-font);
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      color: var(--text);
+    }
+
+    .tb-sep {
+      width: 1px; height: 18px;
+      background: var(--border);
+      margin: 0 6px;
+      flex-shrink: 0;
+    }
+
+    .tbtn {
+      all: unset;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 9px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-soft);
+      white-space: nowrap;
+      transition: background .1s, color .1s;
+    }
+    .tbtn svg {
+      width: 13px; height: 13px;
+      flex-shrink: 0;
+      stroke: currentColor; fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round; stroke-linejoin: round;
+    }
+    .tbtn:hover {
+      background: var(--surface-hi);
+      color: var(--text);
+    }
+    .tbtn.accent {
+      background: var(--acc-a10);
+      color: var(--accent);
+      border: 1px solid var(--acc-a20);
+    }
+    .tbtn.accent:hover {
+      background: rgba(240,180,41,.16);
+    }
+
+    .tb-push { flex: 1; }
+
+    /* ─── Page content ──────────────────── */
+    .page {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 36px 24px 96px;
+    }
+
+    /* ─── Author header ─────────────────── */
+    .author {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-dim);
+    }
+
+    .av-wrap {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+      background: var(--surface-hi);
+    }
+    .av-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      position: absolute; inset: 0;
+      z-index: 2;
+    }
+    .av-init {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--brand-font);
+      font-weight: 800; font-size: 18px;
+      color: #fff; z-index: 1;
+    }
+
+    .author-info { flex: 1; }
+    .author-name {
+      font-family: var(--brand-font);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -.025em;
+      line-height: 1.2;
+    }
+    .author-handle {
+      font-size: .875rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .thread-info {
+      font-size: .75rem;
+      color: var(--muted);
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .thread-info::before {
+      content: '';
+      display: inline-block;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: .7;
+    }
+
+    /* ─── Article ───────────────────────── */
+    #article {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--text);
+      word-break: break-word;
+      outline: none;
+    }
+
+    #article p { margin: 5px 0; }
+    #article p:first-child { margin-top: 0; }
+
+    #article[contenteditable="true"] {
+      outline: 1px dashed var(--border);
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    #article hr.post-sep {
+      border: none;
+      height: 1px;
+      background: var(--border-dim);
+      margin: 32px 0;
+      position: relative;
+    }
+    #article hr.post-sep::after {
+      content: '· · ·';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      background: var(--bg);
+      padding: 0 12px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 6px;
+    }
+
+    .post-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin: 14px 0;
+      display: block;
+      border: 1px solid var(--border-dim);
+    }
+
+    /* ─── Image fallback ────────────────── */
+    .img-fallback {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 12px 14px;
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: .85rem;
+      margin: 10px 0;
+    }
+    .img-actions { display: flex; gap: 8px; align-items: center; }
+    .img-actions a { color: var(--link); text-decoration: none; font-size: .82rem; }
+    .img-actions a:hover { text-decoration: underline; }
+
+    /* ─── Footer ────────────────────────── */
+    footer {
+      margin-top: 56px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-dim);
+      font-size: .75rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--link); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ─── Toast ─────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      background: var(--surface-hi);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.5);
+      animation: toast-in .18s ease, toast-out .28s ease 1.85s forwards;
+      z-index: 999;
+    }
+    @keyframes toast-in {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes toast-out {
+      to { opacity: 0; transform: translateY(4px); }
+    }
+
+    /* ─── Responsive ────────────────────── */
+    @media (max-width: 620px) {
+      .tb-name { display: none; }
+      .tbtn span { display: none; }
+      .tbtn { padding: 5px 7px; }
+      .page { padding: 24px 16px 80px; }
+    }
+
+    @media print {
+      .toolbar { display: none; }
+      html::before { display: none; }
+      body { padding-top: 0; }
+      html { background: #fff; color: #111; }
+      .author { border-bottom-color: #ddd; }
+      .author-name { color: #111; }
+      .author-handle, .thread-info { color: #666; }
+      #article { color: #111; }
+      #article hr.post-sep { background: #ddd; }
+      #article hr.post-sep::after { background: #fff; color: #aaa; }
+      footer { border-top-color: #ddd; color: #888; }
+    }
   </style>
 </head>
 <body>
-  <div id="root">
-    <div class="author-header">
-      <div class="author-image-container" id="avatarContainer">
-        <img id="avatarImg" class="author-image" alt="Avatar" />
-        <div id="avatarInitials" class="author-initials"></div>
+
+  <!-- ── Toolbar ──────────────────────── -->
+  <nav class="toolbar">
+    <div class="tb-brand">
+      <div class="tb-logo">
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.1"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1.5 6h9M7 3.5l3 2.5-3 2.5"/>
+        </svg>
+      </div>
+      <span class="tb-name">Threadmark</span>
+    </div>
+
+    <div class="tb-sep"></div>
+
+    <button id="btnCopy" class="tbtn accent" title="Copy plain text (c)">
+      <svg viewBox="0 0 16 16">
+        <path d="M10.5 2H4a1 1 0 0 0-1 1v8h2"/>
+        <rect x="5.5" y="5" width="8" height="9" rx="1.2"/>
+      </svg>
+      <span>Copy</span>
+    </button>
+
+    <button id="btnCopyMd" class="tbtn accent" title="Copy markdown (m)">
+      <svg viewBox="0 0 16 16">
+        <path d="M3 4h10M3 8h7M3 12h5"/>
+      </svg>
+      <span>Copy MD</span>
+    </button>
+
+    <div class="tb-sep"></div>
+
+    <button id="btnPdf" class="tbtn" title="Print / Save PDF (p)">
+      <svg viewBox="0 0 16 16">
+        <path d="M4 2h6l3 3v9H4V2z"/>
+        <path d="M10 2v3h3M6 9h4M6 12h2"/>
+      </svg>
+      <span>PDF</span>
+    </button>
+
+    <button id="btnMd" class="tbtn" title="Save as Markdown (Shift+M)">
+      <svg viewBox="0 0 16 16">
+        <path d="M8 3v7M5 7.5l3 3 3-3M3 13h10"/>
+      </svg>
+      <span>Save MD</span>
+    </button>
+
+    <button id="btnTxt" class="tbtn" title="Save as plain text">
+      <svg viewBox="0 0 16 16">
+        <path d="M4 3h8M4 7h8M4 11h5"/>
+      </svg>
+      <span>TXT</span>
+    </button>
+
+    <div class="tb-sep"></div>
+
+    <button id="btnImages" class="tbtn" title="Download images">
+      <svg viewBox="0 0 16 16">
+        <rect x="2" y="3" width="12" height="10" rx="1.5"/>
+        <path d="M2 10l3-3 3 3 2-2 4 4"/>
+        <circle cx="11.5" cy="6.5" r="1"/>
+      </svg>
+      <span>Images</span>
+    </button>
+
+    <button id="btnEdit" class="tbtn" title="Toggle edit mode (e)">
+      <svg viewBox="0 0 16 16">
+        <path d="M11 2.5l2.5 2.5-8 8H3V10.5l8-8z"/>
+      </svg>
+      <span>Edit</span>
+    </button>
+  </nav>
+
+  <!-- ── Main content ─────────────────── -->
+  <main class="page">
+
+    <div class="author">
+      <div class="av-wrap" id="avatarContainer">
+        <img id="avatarImg" class="av-img" alt="">
+        <div id="avatarInitials" class="av-init"></div>
       </div>
       <div class="author-info">
         <div id="authorName" class="author-name"></div>
-        <div id="authorUsername" class="author-username"></div>
+        <div id="authorUsername" class="author-handle"></div>
         <div id="threadInfo" class="thread-info"></div>
       </div>
     </div>
-    <div id="article" class="article"></div>
-    <div id="imagesSection" style="margin:20px 0; display:none;">
-      <div style="font-weight:bold; margin-bottom:8px;">Images in thread</div>
-      <ul id="imageList" style="padding-left:18px;"></ul>
-      <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
-        <button id="btnImagesPremium" class="action-button">Download Thread Images (Premium)</button>
-        <span style="color: var(--muted-color); font-size: 0.9rem;">Uses extracted media URLs</span>
-      </div>
-    </div>
-    <div class="actions-bar">
-      <div class="actions-primary">
-        <button id="btnCopy" class="btn primary copy-button" title="Copy text (c)">📋 Copy</button>
-        <button id="btnPdf" class="btn primary" title="Save PDF (p)">🖨️ PDF</button>
-      </div>
-      <div class="actions-secondary">
-        <button id="btnMd" class="btn" title="Save Markdown (m)">⌗ Save MD</button>
-        <button id="btnCopyMd" class="btn" title="Copy Markdown (Shift+M)">⧉ Copy MD</button>
-        <button id="btnTxt" class="btn" title="Save Text (t)">📝 TXT</button>
-      </div>
-      <div class="actions-toggle">
-        <button id="btnEdit" class="btn" title="Toggle edit (e)">✎ Edit</button>
-      </div>
-    </div>
-    <footer style="margin-top: 40px; padding-top: 12px; border-top: 1px solid var(--border-color); color: var(--muted-color); font-size: 0.9rem; text-align: center;">
-      Exported using Thread HTML Extension · <span id="sourceContainer" style="display:none;">Source: <a id="sourceLink" href="#" target="_blank" rel="noopener noreferrer"></a></span>
+
+    <div id="article"></div>
+
+    <footer>
+      <span id="sourceContainer" style="display:none">
+        Source: <a id="sourceLink" href="#" target="_blank" rel="noopener noreferrer"></a>
+      </span>
     </footer>
-  </div>
+
+  </main>
+
   <script src="preview.js"></script>
-  </body>
-  </html>
+</body>
+</html>

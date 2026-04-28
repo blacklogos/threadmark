@@ -1,82 +1,265 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Threads to HTML</title>
+  <meta charset="UTF-8">
+  <title>Threadmark</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    body {
+    :root {
+      --bg:         #09090d;
+      --surface:    #111117;
+      --surface-hi: #18181f;
+      --border:     #1e1e2a;
+      --border-dim: #171720;
+      --accent:     #f0b429;
+      --acc-a12:    rgba(240,180,41,.12);
+      --acc-a22:    rgba(240,180,41,.22);
+      --text:       #e8e4db;
+      --muted:      #6a6678;
+      --dim:        #2c2a38;
+      --ok:         #4ade80;
+      --err:        #f87171;
+      --font:       'Plus Jakarta Sans', -apple-system, system-ui, sans-serif;
+      --brand-font: 'Syne', var(--font);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
       width: 300px;
-      padding: 15px;
-      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
     }
-    .title {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 12px;
-      text-align: center;
-    }
-    .button-container {
+
+    /* ─── Header ──────────────────────── */
+    .header {
       display: flex;
+      align-items: center;
       gap: 10px;
-      margin-bottom: 15px;
+      padding: 13px 14px 12px;
+      border-bottom: 1px solid var(--border);
     }
-    button {
-      flex: 1;
-      padding: 10px;
-      border: none;
+
+    .logo {
+      width: 28px; height: 28px;
+      background: var(--accent);
+      border-radius: 7px;
+      display: grid; place-items: center;
+      flex-shrink: 0;
+    }
+    .logo svg { width: 14px; height: 14px; color: #1a1200; }
+
+    .brand { flex: 1; }
+    .brand-name {
+      font-family: var(--brand-font);
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -.03em;
+      line-height: 1;
+    }
+    .brand-sub {
+      font-size: 9.5px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      margin-top: 2.5px;
+    }
+
+    .badge {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--muted);
+      background: var(--border-dim);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 6px;
+    }
+
+    /* ─── Action buttons ──────────────── */
+    .actions {
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .btn {
+      all: unset;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 9px 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 8px;
       cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      transition: background-color 0.2s;
+      transition: background .1s, border-color .1s, transform .08s;
     }
-    #preview {
-      background-color: #6c757d;
-      color: white;
+    .btn:hover {
+      background: var(--surface-hi);
+      border-color: #24243a;
+      transform: translateY(-.5px);
     }
-    #preview:hover {
-      background-color: #5a6268;
+    .btn:active { transform: none; }
+    .btn.primary {
+      background: var(--acc-a12);
+      border-color: var(--acc-a22);
     }
-    #convert {
-      background-color: #0095f6;
-      color: white;
+    .btn.primary:hover {
+      background: rgba(240,180,41,.18);
+      border-color: rgba(240,180,41,.35);
     }
-    #convert:hover {
-      background-color: #0081d6;
-    }
-    #status {
-      margin-top: 10px;
-      text-align: center;
-      color: #666;
-      font-size: 13px;
-      min-height: 40px;
-    }
-    .info {
-      font-size: 12px;
-      color: #888;
-      margin-top: 15px;
-      text-align: center;
-    }
-    button:disabled {
-      opacity: 0.6;
+    .btn:disabled {
+      opacity: .35;
       cursor: not-allowed;
+      pointer-events: none;
+      transform: none;
     }
+
+    .btn-icon {
+      width: 32px; height: 32px;
+      border-radius: 7px;
+      background: var(--dim);
+      display: grid; place-items: center;
+      flex-shrink: 0;
+    }
+    .btn.primary .btn-icon { background: var(--accent); }
+    .btn-icon svg {
+      width: 14px; height: 14px;
+      stroke: var(--muted); fill: none;
+      stroke-width: 1.75;
+      stroke-linecap: round; stroke-linejoin: round;
+    }
+    .btn.primary .btn-icon svg { stroke: #1a1200; }
+
+    .btn-body { flex: 1; min-width: 0; }
+    .btn-label {
+      font-size: 12.5px; font-weight: 600;
+      color: var(--text); line-height: 1.3;
+    }
+    .btn.primary .btn-label { color: var(--accent); }
+    .btn-desc { font-size: 10.5px; color: var(--muted); margin-top: 1px; }
+
+    .chevron {
+      width: 13px; height: 13px;
+      stroke: var(--dim); fill: none;
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+      flex-shrink: 0;
+      transition: stroke .1s, transform .1s;
+    }
+    .btn:hover .chevron { stroke: var(--muted); transform: translateX(1px); }
+
+    /* ─── Status bar ──────────────────── */
+    .statusbar {
+      display: flex; align-items: center; gap: 7px;
+      padding: 9px 14px 10px;
+      border-top: 1px solid var(--border);
+    }
+
+    .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--dim);
+      flex-shrink: 0;
+      transition: background .25s, box-shadow .25s;
+    }
+    .dot.working {
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
+      animation: blink 1.3s ease-in-out infinite;
+    }
+    .dot.ok  { background: var(--ok);  box-shadow: 0 0 5px var(--ok); }
+    .dot.err { background: var(--err); box-shadow: 0 0 5px var(--err); }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: .28; }
+    }
+
+    #status {
+      font-size: 11px; color: var(--muted);
+      line-height: 1.3; flex: 1;
+      transition: color .2s;
+    }
+    #status.working { color: var(--accent); }
+    #status.ok      { color: var(--ok); }
+    #status.err     { color: var(--err); }
   </style>
 </head>
 <body>
-  <div class="title">Threads to HTML Converter</div>
-  
-  <div class="button-container">
-    <button id="preview">Preview</button>
-    <button id="convert">Download</button>
+
+  <div class="header">
+    <div class="logo">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2.5 8h11M9 5l4 3-4 3"/>
+      </svg>
+    </div>
+    <div class="brand">
+      <div class="brand-name">Threadmark</div>
+      <div class="brand-sub">Turn threads into tools</div>
+    </div>
+    <span class="badge">v0.4</span>
   </div>
-  
-  <div id="status">Go to a Threads post and click a button</div>
-  
-  <div class="info">
-    Preview opens the HTML in a new tab<br>
-    Download saves directly to your computer
+
+  <div class="actions">
+
+    <button id="btnCopy" class="btn primary">
+      <div class="btn-icon">
+        <svg viewBox="0 0 16 16">
+          <path d="M10.5 2H4a1 1 0 0 0-1 1v8h2"/>
+          <rect x="5.5" y="5" width="8" height="9" rx="1.2"/>
+        </svg>
+      </div>
+      <div class="btn-body">
+        <div class="btn-label">Copy for AI</div>
+        <div class="btn-desc">Markdown to clipboard</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 16 16"><path d="M6 12l4-4-4-4"/></svg>
+    </button>
+
+    <button id="btnPreview" class="btn">
+      <div class="btn-icon">
+        <svg viewBox="0 0 16 16">
+          <rect x="2" y="3" width="12" height="10" rx="1.5"/>
+          <path d="M5 7.5h6M5 10.5h4"/>
+        </svg>
+      </div>
+      <div class="btn-body">
+        <div class="btn-label">Preview</div>
+        <div class="btn-desc">Open formatted view</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 16 16"><path d="M6 12l4-4-4-4"/></svg>
+    </button>
+
+    <button id="btnDownload" class="btn">
+      <div class="btn-icon">
+        <svg viewBox="0 0 16 16">
+          <path d="M8 3v7M5 7.5l3 3 3-3M3 13h10"/>
+        </svg>
+      </div>
+      <div class="btn-body">
+        <div class="btn-label">Download HTML</div>
+        <div class="btn-desc">Save as file</div>
+      </div>
+      <svg class="chevron" viewBox="0 0 16 16"><path d="M6 12l4-4-4-4"/></svg>
+    </button>
+
   </div>
-  
+
+  <div class="statusbar">
+    <div class="dot" id="statusDot"></div>
+    <div id="status">Navigate to a Threads post</div>
+  </div>
+
   <script src="popup.js"></script>
 </body>
-</html> 
+</html>

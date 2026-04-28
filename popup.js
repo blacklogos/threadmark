@@ -1,187 +1,88 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const previewButton = document.getElementById('preview');
-  const convertButton = document.getElementById('convert');
-  const status = document.getElementById('status');
-  
-  // Keep track of current preview tab
-  let currentPreviewTabId = null;
-  
-  // Function to inject content script
-  async function injectContentScript(tabId) {
-    try {
-      console.log('Injecting content script into tab:', tabId);
-      await chrome.scripting.executeScript({
-        target: { tabId: tabId },
-        files: ['content.js']
-      });
-      console.log('Content script injected successfully');
-    } catch (error) {
-      console.error('Failed to inject content script:', error);
-      throw error;
-    }
+  const btnCopy     = document.getElementById('btnCopy');
+  const btnPreview  = document.getElementById('btnPreview');
+  const btnDownload = document.getElementById('btnDownload');
+  const statusEl    = document.getElementById('status');
+  const dotEl       = document.getElementById('statusDot');
+
+  function setStatus(msg, state = '') {
+    statusEl.textContent = msg;
+    statusEl.className   = state;
+    dotEl.className      = 'dot' + (state ? ' ' + state : '');
   }
-  
-  // Function to wait for content script to be ready
-  async function waitForContentScript(tabId, maxAttempts = 5) {
-    console.log('Waiting for content script to be ready...');
-    for (let i = 0; i < maxAttempts; i++) {
-      try {
-        const response = await chrome.tabs.sendMessage(tabId, { action: 'ping' });
-        console.log('Content script response:', response);
-        if (response && response.initialized) {
-          console.log('Content script is ready');
-          return true;
-        }
-      } catch (error) {
-        console.log(`Attempt ${i + 1} failed:`, error);
-      }
-      await new Promise(resolve => setTimeout(resolve, 500));
-    }
-    throw new Error('Content script not ready after multiple attempts');
+
+  function setLoading(on) {
+    [btnCopy, btnPreview, btnDownload].forEach(b => b.disabled = on);
+    if (on) setStatus('Extracting…', 'working');
   }
-  
-  // Function to check if we're on a valid Threads page
-  async function validateThreadsPage() {
+
+  async function getActiveTab() {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    if (!tab) {
-      throw new Error('No active tab found');
-    }
-    
-    // Support both domains; default to threads.com as primary target
-    const isThreadsCom = tab.url.includes('threads.com');
-    const isThreadsNet = tab.url.includes('threads.net');
-    if (!isThreadsCom && !isThreadsNet) {
-      throw new Error('Please navigate to a Threads post on threads.com or threads.net');
-    }
-    
+    if (!tab) throw new Error('No active tab');
+    if (!tab.url?.includes('threads.')) throw new Error('Navigate to a Threads post first');
     return tab;
   }
-  
-  // Function to extract thread data
-  async function extractThreadData(tab) {
-    status.textContent = 'Checking content script...';
-    
+
+  async function ensureContentScript(tabId) {
     try {
-      // Try to ping the content script
-      await chrome.tabs.sendMessage(tab.id, { action: 'ping' });
-      console.log('Content script already injected');
-    } catch (error) {
-      console.log('Content script not found, injecting...');
-      status.textContent = 'Injecting content script...';
-      await injectContentScript(tab.id);
-    }
-    
-    status.textContent = 'Waiting for content script...';
-    await waitForContentScript(tab.id);
-    
-    status.textContent = 'Extracting post content...';
-    console.log('Extracting post content...');
-    
-    const response = await chrome.tabs.sendMessage(tab.id, { action: 'extract' });
-    console.log('Extraction response:', response);
-    
-    if (!response.success) {
-      throw new Error(response.error || 'Failed to extract post content');
-    }
-    
-    return response.data;
-  }
-  
-  // Function to generate HTML preview
-  async function generatePreview() {
-    try {
-      previewButton.disabled = true;
-      convertButton.disabled = true;
-      
-      const tab = await validateThreadsPage();
-      const threadData = await extractThreadData(tab);
-      
-      status.textContent = 'Generating preview...';
-      
-      const previewResponse = await chrome.runtime.sendMessage({
-        action: 'preview',
-        data: threadData
-      });
-      
-      console.log('Preview response:', previewResponse);
-      
-      if (!previewResponse.success) {
-        throw new Error(previewResponse.error || 'Failed to generate preview');
-      }
-      
-      currentPreviewTabId = previewResponse.previewTabId;
-      status.textContent = 'Preview opened in new tab';
-      
-      // Re-enable buttons
-      previewButton.disabled = false;
-      convertButton.disabled = false;
-    } catch (error) {
-      console.error('Preview error:', error);
-      status.textContent = `Error: ${error.message}`;
-      
-      // Re-enable buttons
-      previewButton.disabled = false;
-      convertButton.disabled = false;
+      await chrome.tabs.sendMessage(tabId, { action: 'ping' });
+    } catch (_) {
+      await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
+      await new Promise(r => setTimeout(r, 300));
     }
   }
-  
-  // Function to download HTML
-  async function downloadHtml() {
-    try {
-      previewButton.disabled = true;
-      convertButton.disabled = true;
-      
-      // Check if we have an active preview to download from
-      if (currentPreviewTabId) {
-        status.textContent = 'Downloading from preview...';
-        
-        const downloadResponse = await chrome.runtime.sendMessage({
-          action: 'downloadFromPreview',
-          previewTabId: currentPreviewTabId
-        });
-        
-        console.log('Download response:', downloadResponse);
-        
-        if (!downloadResponse.success) {
-          throw new Error(downloadResponse.error || 'Failed to download from preview');
-        }
-        
-        status.textContent = 'Download complete!';
-      } else {
-        // No preview, extract and download directly
-        const tab = await validateThreadsPage();
-        const threadData = await extractThreadData(tab);
-        
-        status.textContent = 'Generating HTML file...';
-        
-        const downloadResponse = await chrome.runtime.sendMessage({
-          action: 'download',
-          data: threadData
-        });
-        
-        console.log('Download response:', downloadResponse);
-        
-        if (!downloadResponse.success) {
-          throw new Error(downloadResponse.error || 'Failed to generate HTML file');
-        }
-        
-        status.textContent = 'Download complete! Check your downloads folder.';
-      }
-      
-      // Re-enable buttons
-      previewButton.disabled = false;
-      convertButton.disabled = false;
-    } catch (error) {
-      console.error('Download error:', error);
-      status.textContent = `Error: ${error.message}`;
-      
-      // Re-enable buttons
-      previewButton.disabled = false;
-      convertButton.disabled = false;
-    }
+
+  async function extractData() {
+    const tab = await getActiveTab();
+    await ensureContentScript(tab.id);
+    const res = await chrome.tabs.sendMessage(tab.id, { action: 'extract' });
+    if (!res?.success) throw new Error(res?.error || 'Extraction failed');
+    return res.data;
   }
-  
-  // Add event listeners for buttons
-  previewButton.addEventListener('click', generatePreview);
-  convertButton.addEventListener('click', downloadHtml);
-}); 
+
+  btnCopy.addEventListener('click', async () => {
+    setLoading(true);
+    try {
+      const data = await extractData();
+      setStatus('Generating…', 'working');
+      const res = await chrome.runtime.sendMessage({ action: 'toMarkdown', data });
+      if (!res?.success) throw new Error(res?.error || 'Conversion failed');
+      await navigator.clipboard.writeText(res.markdown);
+      setStatus('Copied to clipboard!', 'ok');
+    } catch (e) {
+      setStatus(e.message, 'err');
+    } finally {
+      setLoading(false);
+    }
+  });
+
+  btnPreview.addEventListener('click', async () => {
+    setLoading(true);
+    try {
+      const data = await extractData();
+      setStatus('Opening preview…', 'working');
+      const res = await chrome.runtime.sendMessage({ action: 'preview', data });
+      if (!res?.success) throw new Error(res?.error || 'Preview failed');
+      setStatus('Preview opened', 'ok');
+    } catch (e) {
+      setStatus(e.message, 'err');
+    } finally {
+      setLoading(false);
+    }
+  });
+
+  btnDownload.addEventListener('click', async () => {
+    setLoading(true);
+    try {
+      const data = await extractData();
+      setStatus('Downloading…', 'working');
+      const res = await chrome.runtime.sendMessage({ action: 'download', data });
+      if (!res?.success) throw new Error(res?.error || 'Download failed');
+      setStatus('Download started!', 'ok');
+    } catch (e) {
+      setStatus(e.message, 'err');
+    } finally {
+      setLoading(false);
+    }
+  });
+});

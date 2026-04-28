@@ -1,5 +1,32 @@
 # Version History
 
+## v0.4.0 - April 28, 2026
+
+### Release Notes
+
+Renamed to **Threadmark**. Full DOM re-engineering for current Threads.com, redesigned 2026 UI, and image/avatar improvements.
+
+#### New
+- Renamed extension from "Threads to HTML" to **Threadmark** — new tagline: *Turn threads into tools.*
+- Completely redesigned popup and preview UI (dark editorial theme, amber accent, Syne + Plus Jakarta Sans typography)
+- Background service worker proxy for CDN-blocked images (`proxyFetchImage`)
+- Avatar extraction via `img[alt*="handle"]` — language-agnostic, works in Vietnamese, English, etc.
+- Page-level image fallback sweep catches images in photo-only posts
+- `imageUrls` stored in `renderData` — downloads survive DOM mutation
+
+#### Fixed
+- Multi-post thread extraction: Threads changed `div[dir=auto]` → `span[dir=auto]`; now uses universal `[dir="auto"]` selector
+- Inverted author-link filter correctly identifies text containers vs. username headers
+- `extractImages` now uses `img.currentSrc` for responsive/lazy images
+- Images extracted from parent container (sibling of text block), not text container itself
+- UI noise filter extended with Vietnamese/English legal footer patterns
+- Status dot in popup shows animated amber/green/red states
+
+#### Removed
+- `interactive.js`, `utils/runtime-utils.js`, `utils/cleaning-patterns.json`, `tests/runtime-utils.test.html` — cleaned up unused modules
+
+---
+
 ## v0.3.1 - March 22, 2024
 
 ### Release Notes
