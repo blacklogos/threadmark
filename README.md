@@ -95,3 +95,7 @@ Yes — open Preview and click **Images** to bulk-download all post media.
 
 **What if extraction fails?**  
 Refresh the Threads page and try again. If the issue persists, Threads may have updated their DOM — open an issue with the thread URL.
+
+## Support
+
+Threadmark is free and open source. If it earns a place in your workflow, you can [help keep it that way](https://cc4.marketing/?utm_source=threadmark&utm_medium=readme&utm_campaign=footer-donate#donate).
