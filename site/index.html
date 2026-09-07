@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Threadmark — Turn Threads posts into AI-ready Markdown</title>
+  <meta name="description" content="Threadmark is a free Chrome extension that extracts Threads.com posts into clean Markdown, HTML, or plain text — AI-ready in one click. No server. No tracking. 100% local.">
+  <meta name="keywords" content="Threadmark, Threads chrome extension, save threads posts, threads to markdown, threads to html, AI content extraction, Threads.com extension, copy threads for AI, ChatGPT threads, Claude threads">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="blacklogos">
+  <meta name="theme-color" content="#f0b429">
+  <link rel="canonical" href="https://threadmark.cc4.marketing/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://threadmark.cc4.marketing/">
+  <meta property="og:title" content="Threadmark — Turn Threads posts into AI-ready Markdown">
+  <meta property="og:description" content="Extract Threads.com posts to Markdown, HTML, or plain text for AI tools. One click. 100% local. Free and open source.">
+  <meta property="og:site_name" content="Threadmark">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@blacklogos">
+  <meta name="twitter:url" content="https://threadmark.cc4.marketing/">
+  <meta name="twitter:title" content="Threadmark — Turn Threads posts into AI-ready Markdown">
+  <meta name="twitter:description" content="Extract Threads.com posts to clean Markdown for Claude, ChatGPT, Gemini. Free Chrome extension. One click. 100% local.">"
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Threadmark",
+    "applicationCategory": "BrowserApplication",
+    "operatingSystem": "Chrome",
+    "url": "https://threadmark.cc4.marketing/",
+    "description": "Chrome extension that extracts Threads.com posts into clean Markdown, HTML, or plain text — AI-ready in one click.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "blacklogos", "url": "https://github.com/blacklogos" },
+    "softwareVersion": "0.4.0",
+    "featureList": [
+      "One-click Markdown copy for AI tools",
+      "Full multi-post thread extraction",
+      "Formatted preview tab with edit mode",
+      "Export as HTML, Markdown, TXT, or PDF",
+      "Bulk image download",
+      "100% local — no server, no tracking"
+    ],
+    "codeRepository": "https://github.com/blacklogos/threadmark"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What does Threadmark do?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Threadmark is a free Chrome extension that extracts Threads.com posts into clean Markdown, HTML, or plain text. It captures full multi-post threads including author info, images, and metadata — making social content AI-ready in one click. All processing happens locally in your browser; nothing is sent to any server." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I use Threads posts with Claude, ChatGPT, or Gemini?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Install Threadmark from GitHub, open any Threads post, and click 'Copy for AI'. Clean Markdown is instantly on your clipboard — paste it directly into Claude, ChatGPT, Gemini, Perplexity, or any AI tool. No reformatting needed." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Threadmark work with multi-post threads?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Threadmark extracts all posts in a thread in order, cleanly separated with author metadata and post dividers. Each post is individually attributed so the AI understands the conversation structure." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Threadmark send my data anywhere?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. Threadmark runs 100% in your browser. Your Threads content never leaves your machine. There is no backend server, no analytics, no tracking, and no account required." }
+      },
+      {
+        "@type": "Question",
+        "name": "Can Threadmark download images from Threads posts?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Open the Preview tab and click 'Images' to bulk-download all media from a thread. Threadmark uses a service worker proxy to fetch CDN-blocked assets from fbcdn.net and cdninstagram.com, so images load reliably even when direct browser requests are blocked." }
+      },
+      {
+        "@type": "Question",
+        "name": "What export formats does Threadmark support?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Threadmark supports four export formats: Markdown (.md) for AI tools and note-taking apps, plain text (.txt), rich HTML (.html) as a self-contained archive, and PDF via the browser print dialog. You can also copy Markdown or plain text directly to the clipboard." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I save a Threads post as Markdown?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Install Threadmark, navigate to any Threads post, click the extension icon, then click 'Preview'. In the preview tab, press Shift+M or click 'Save MD' to download a .md file of the full thread." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Threadmark work on threads.net and threads.com?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Threadmark has host permissions for both threads.com and threads.net and works on both domains." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is Threadmark free and open source?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Threadmark is completely free and open source under the MIT license. The source code is available on GitHub at https://github.com/blacklogos/threadmark." }
+      },
+      {
+        "@type": "Question",
+        "name": "What should I do if Threadmark stops working?",
+        "acceptedAnswer": { "@type": "Answer", "text": "If extraction fails, refresh the Threads page and try again. If the issue persists, Threads may have updated their DOM structure. Open an issue on GitHub with the thread URL and the extension will be updated." }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:           #f4f0e8;
+      --accent:       #f0b429;
+      --accent-dark:  #c8921a;
+      --text:         #141414;
+      --text-muted:   #3a3a3a;
+      --white:        #ffffff;
+      --card-bg:      #fffbf0;
+      --code-bg:      #0e0e12;
+      --radius:       16px;
+      --font-mono:    'IBM Plex Mono', monospace;
+      --font-serif:   'Fraunces', serif;
+    }
+
+    body {
+      font-family: var(--font-mono);
+      color: var(--text);
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse at 15% 0%,   #fff4d6 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 10%,  #ffe8b2 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 100%, #e8e4d8 0%, transparent 50%);
+      min-height: 100vh;
+      line-height: 1.7;
+      font-size: 15px;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(20,20,20,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(20,20,20,.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Header ───────────────────────── */
+    header { padding: 20px 0; }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--white);
+      border: 1px solid rgba(20,20,20,.08);
+      border-radius: 999px;
+      padding: 10px 20px 10px 16px;
+      box-shadow: 0 2px 12px rgba(20,20,20,.06);
+    }
+
+    .header-left { display: flex; align-items: center; gap: 12px; }
+
+    .logo {
+      font-family: var(--font-serif);
+      font-size: 20px; font-weight: 700;
+      color: var(--text); text-decoration: none;
+    }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--text-muted);
+      background: conic-gradient(from 180deg, #fff4d6, #ffe8b2, #ffefc2, #fff4d6);
+      padding: 4px 12px; border-radius: 999px;
+    }
+
+    .header-right { display: flex; align-items: center; gap: 16px; }
+
+    .header-link {
+      font-size: 13px; color: var(--text-muted);
+      text-decoration: none; letter-spacing: .04em;
+      transition: color .2s;
+    }
+    .header-link:hover { color: var(--text); }
+
+    .gh-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--text); color: var(--white);
+      font-family: var(--font-mono); font-size: 12px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 8px 16px; border-radius: 999px;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .gh-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(20,20,20,.2); }
+    .gh-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+    /* ── Hero ─────────────────────────── */
+    .hero {
+      padding: 80px 0 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-text h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(36px, 5vw, 58px);
+      line-height: 1.1; font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .hero-text h1 span { color: var(--accent); }
+
+    .hero-text .tagline {
+      font-size: 16px; color: var(--text-muted);
+      margin-bottom: 32px; max-width: 440px;
+    }
+
+    .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: #1a1000;
+      font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 14px 28px; border-radius: var(--radius);
+      text-decoration: none; border: none; cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(240,180,41,.35);
+    }
+
+    .btn-dark {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--text); color: var(--white);
+      font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 14px 28px; border-radius: var(--radius);
+      text-decoration: none; border: none; cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-dark:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(20,20,20,.2); }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--white); color: var(--text);
+      font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 14px 28px; border-radius: var(--radius);
+      text-decoration: none; border: 1px solid rgba(20,20,20,.12); cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(20,20,20,.08); }
+
+    .hero-visual { position: relative; }
+    .hero-visual .screenshot-glow {
+      position: absolute; inset: -20px;
+      background: radial-gradient(ellipse at center, rgba(240,180,41,.14) 0%, transparent 70%);
+      z-index: -1; border-radius: 30px;
+    }
+    .hero-visual svg { width: 100%; border-radius: var(--radius); display: block; }
+
+    /* ── Install Card ─────────────────── */
+    .install-section { padding: 40px 0 60px; }
+
+    .install-card {
+      background: var(--card-bg);
+      border: 2px dashed rgba(240,180,41,.35);
+      border-radius: var(--radius);
+      padding: 32px;
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .install-card .label {
+      font-size: 12px; font-weight: 600;
+      letter-spacing: .16em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 16px;
+    }
+
+    .install-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .install-step {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: var(--white);
+      border: 1px solid rgba(20,20,20,.06);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+    }
+
+    .install-step-num {
+      font-family: var(--font-serif);
+      font-size: 18px; font-weight: 700;
+      color: var(--accent);
+      line-height: 1.3;
+      flex-shrink: 0;
+      width: 20px;
+    }
+
+    .install-code {
+      position: relative;
+      background: var(--code-bg);
+      border-radius: 10px;
+      padding: 16px 60px 16px 20px;
+      text-align: left;
+      margin-top: 16px;
+    }
+
+    .install-code code {
+      font-family: var(--font-mono);
+      font-size: 14px; color: #e0dcd4;
+      word-break: break-all;
+    }
+    .install-code code .prompt { color: var(--accent); }
+    .install-code code .url { color: #7eb8f7; }
+
+    .copy-btn {
+      position: absolute; top: 50%; right: 12px;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.15);
+      color: #e0dcd4;
+      font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 6px 12px; border-radius: 8px; cursor: pointer;
+      transition: background .2s, transform .15s;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,.18); transform: translateY(-50%) scale(1.04); }
+    .copy-btn.copied { background: #2d6a4f; color: var(--white); }
+
+    /* ── Features ─────────────────────── */
+    .features { padding: 60px 0 80px; }
+
+    .section-heading { text-align: center; margin-bottom: 48px; }
+    .section-heading h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700; margin-bottom: 12px;
+    }
+    .section-heading p { color: var(--text-muted); font-size: 15px; max-width: 500px; margin: 0 auto; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--white);
+      border: 1px solid rgba(20,20,20,.06);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(20,20,20,.08); }
+
+    .feature-num {
+      font-family: var(--font-serif);
+      font-size: 32px; font-weight: 700;
+      color: var(--accent); line-height: 1;
+      margin-bottom: 12px;
+    }
+    .feature-card h3 { font-family: var(--font-serif); font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+    /* ── How It Works ─────────────────── */
+    .how-it-works { padding: 60px 0 80px; }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .step { text-align: center; position: relative; }
+
+    .step-num {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--text); color: var(--white);
+      font-family: var(--font-serif); font-size: 20px; font-weight: 700;
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .step h3 { font-family: var(--font-serif); font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .step p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 24px; right: -10px;
+      width: 20px; height: 2px;
+      background: rgba(20,20,20,.15);
+    }
+
+    /* ── Tech Stack ───────────────────── */
+    .tech { padding: 40px 0 80px; }
+
+    .tech-inner {
+      background: var(--white);
+      border: 1px solid rgba(20,20,20,.06);
+      border-radius: var(--radius);
+      padding: 40px;
+      display: flex; align-items: center;
+      justify-content: center;
+      gap: 48px; flex-wrap: wrap;
+    }
+
+    .tech-item { text-align: center; }
+    .tech-item .tech-label {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: .16em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 4px;
+    }
+    .tech-item .tech-name {
+      font-family: var(--font-serif);
+      font-size: 18px; font-weight: 700; color: var(--text);
+    }
+
+    /* ── Footer ───────────────────────── */
+    footer {
+      border-top: 1px solid rgba(20,20,20,.08);
+      padding: 32px 0 40px;
+    }
+
+    .footer-inner {
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    }
+
+    .footer-credits {
+      font-size: 12px; color: var(--text-muted);
+      letter-spacing: .04em;
+    }
+
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a {
+      font-size: 12px; color: var(--text-muted);
+      text-decoration: none; letter-spacing: .04em;
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── FAQ ──────────────────────────── */
+    .faq { padding: 80px 0; }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 48px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid rgba(20,20,20,.12);
+    }
+
+    .faq-q {
+      all: unset;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      padding: 18px 0;
+      font-family: var(--font-serif);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      line-height: 1.4;
+      box-sizing: border-box;
+    }
+
+    .faq-q:hover { color: var(--accent-dark); }
+
+    .faq-icon {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: transform .2s, background .2s;
+    }
+    .faq-icon svg {
+      width: 10px; height: 10px;
+      stroke: var(--text);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      fill: none;
+      transition: transform .2s;
+    }
+    .faq-item.open .faq-icon { background: var(--text); }
+    .faq-item.open .faq-icon svg { stroke: var(--accent); transform: rotate(45deg); }
+
+    .faq-a {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease, padding .3s ease;
+    }
+    .faq-a p { padding-bottom: 18px; }
+    .faq-item.open .faq-a { max-height: 300px; }
+
+    /* ── Responsive ───────────────────── */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; text-align: center; padding: 50px 0 40px; gap: 40px; }
+      .hero-text .tagline { margin: 0 auto 32px; }
+      .hero-ctas { justify-content: center; }
+      .hero-visual { order: -1; max-width: 360px; margin: 0 auto; }
+      .header-right .header-link { display: none; }
+      .features-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: repeat(2, 1fr); }
+      .step:nth-child(2)::after { display: none; }
+      .tech-inner { gap: 28px; padding: 24px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+      .faq-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────── -->
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div class="header-left">
+        <a href="#" class="logo">Threadmark</a>
+        <span class="badge">v0.4.0</span>
+      </div>
+      <div class="header-right">
+        <a href="#features" class="header-link">Features</a>
+        <a href="#how" class="header-link">How it works</a>
+        <a href="#install" class="header-link">Install</a>
+        <a href="#faq" class="header-link">FAQ</a>
+        <a href="https://github.com/blacklogos/threadmark" class="gh-btn" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── Hero ────────────────────────────────── -->
+<section class="hero container">
+  <div class="hero-text">
+    <h1>Turn <span>threads</span><br>into tools.</h1>
+    <p class="tagline">
+      Threadmark extracts Threads.com posts into clean Markdown, HTML, or plain text —
+      ready to paste into Claude, ChatGPT, or any AI tool. One click. No server. Free.
+    </p>
+    <div class="hero-ctas">
+      <a href="https://github.com/blacklogos/threadmark" class="btn-primary" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1v8M4.5 6l3.5 3.5L11.5 6M2 13h12"/></svg>
+        Install Free
+      </a>
+      <a href="https://github.com/blacklogos/threadmark" class="btn-secondary" target="_blank" rel="noopener">View Source</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="screenshot-glow"></div>
+    <!-- SVG mockup: extension popup + output preview -->
+    <svg viewBox="0 0 480 340" xmlns="http://www.w3.org/2000/svg" style="border-radius:16px;box-shadow:0 24px 60px rgba(20,20,20,0.18);">
+      <!-- Background -->
+      <rect width="480" height="340" fill="#0d0d11"/>
+
+      <!-- LEFT: Extension popup -->
+      <!-- Popup window frame -->
+      <rect x="24" y="24" width="186" height="202" rx="12" fill="#111117" stroke="#1e1e2a" stroke-width="1"/>
+
+      <!-- Popup header bar -->
+      <rect x="24" y="24" width="186" height="46" rx="12" fill="#111117"/>
+      <rect x="24" y="58" width="186" height="12" fill="#111117"/>
+
+      <!-- Logo amber square -->
+      <rect x="38" y="35" width="22" height="22" rx="6" fill="#f0b429"/>
+      <!-- Arrow icon in logo -->
+      <line x1="44" y1="46" x2="54" y2="46" stroke="#1a1200" stroke-width="1.8" stroke-linecap="round"/>
+      <polyline points="51,42 55,46 51,50" fill="none" stroke="#1a1200" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <!-- Brand text -->
+      <text x="66" y="44" font-family="serif" font-size="9" font-weight="700" fill="#e8e4db" letter-spacing="-0.3">Threadmark</text>
+      <text x="66" y="54" font-family="monospace" font-size="6.5" fill="#6a6678" letter-spacing="0.5">CONTENT EXTRACTOR</text>
+
+      <!-- v badge -->
+      <rect x="175" y="38" width="26" height="14" rx="3" fill="#1e1e2a" stroke="#1e1e2a"/>
+      <text x="188" y="48" font-family="monospace" font-size="6" fill="#6a6678" text-anchor="middle">v0.4</text>
+
+      <!-- Divider -->
+      <line x1="32" y1="70" x2="202" y2="70" stroke="#1e1e2a" stroke-width="1"/>
+
+      <!-- Button 1: Copy for AI (primary amber) -->
+      <rect x="32" y="78" width="178" height="38" rx="8" fill="#2a2200" stroke="rgba(240,180,41,0.25)" stroke-width="1"/>
+      <!-- Icon box amber -->
+      <rect x="40" y="85" width="24" height="24" rx="6" fill="#f0b429"/>
+      <rect x="46" y="91" width="8" height="7" rx="1" fill="#1a1200"/>
+      <rect x="49" y="89" width="8" height="7" rx="1" fill="#1a1200"/>
+      <!-- Label -->
+      <text x="72" y="96" font-family="monospace" font-size="8" font-weight="600" fill="#f0b429">Copy for AI</text>
+      <text x="72" y="107" font-family="monospace" font-size="6.5" fill="#6a6678">Markdown to clipboard</text>
+      <!-- Chevron -->
+      <polyline points="196,93 200,97 196,101" fill="none" stroke="#3c3a4a" stroke-width="1.5" stroke-linecap="round"/>
+
+      <!-- Button 2: Preview -->
+      <rect x="32" y="120" width="178" height="38" rx="8" fill="#111117" stroke="#1e1e2a" stroke-width="1"/>
+      <rect x="40" y="127" width="24" height="24" rx="6" fill="#2c2a38"/>
+      <rect x="43" y="131" width="18" height="14" rx="2" fill="none" stroke="#6a6678" stroke-width="1.2"/>
+      <line x1="46" y1="136" x2="58" y2="136" stroke="#6a6678" stroke-width="1.2" stroke-linecap="round"/>
+      <line x1="46" y1="139.5" x2="55" y2="139.5" stroke="#6a6678" stroke-width="1.2" stroke-linecap="round"/>
+      <text x="72" y="138" font-family="monospace" font-size="8" font-weight="600" fill="#e8e4db">Preview</text>
+      <text x="72" y="149" font-family="monospace" font-size="6.5" fill="#6a6678">Open formatted view</text>
+      <polyline points="196,135 200,139 196,143" fill="none" stroke="#3c3a4a" stroke-width="1.5" stroke-linecap="round"/>
+
+      <!-- Button 3: Download -->
+      <rect x="32" y="162" width="178" height="38" rx="8" fill="#111117" stroke="#1e1e2a" stroke-width="1"/>
+      <rect x="40" y="169" width="24" height="24" rx="6" fill="#2c2a38"/>
+      <line x1="52" y1="173" x2="52" y2="181" stroke="#6a6678" stroke-width="1.4" stroke-linecap="round"/>
+      <polyline points="48,179 52,183 56,179" fill="none" stroke="#6a6678" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="45" y1="186" x2="59" y2="186" stroke="#6a6678" stroke-width="1.4" stroke-linecap="round"/>
+      <text x="72" y="180" font-family="monospace" font-size="8" font-weight="600" fill="#e8e4db">Download HTML</text>
+      <text x="72" y="191" font-family="monospace" font-size="6.5" fill="#6a6678">Save as file</text>
+      <polyline points="196,177 200,181 196,185" fill="none" stroke="#3c3a4a" stroke-width="1.5" stroke-linecap="round"/>
+
+      <!-- Status bar -->
+      <line x1="32" y1="206" x2="202" y2="206" stroke="#1e1e2a" stroke-width="1"/>
+      <circle cx="42" cy="215" r="3" fill="#4ade80"/>
+      <text x="50" y="219" font-family="monospace" font-size="7" fill="#4ade80">Copied to clipboard!</text>
+
+      <!-- Arrow between popup and output -->
+      <line x1="220" y1="120" x2="254" y2="120" stroke="#f0b429" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <polyline points="250,115 256,120 250,125" fill="none" stroke="#f0b429" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <!-- RIGHT: Markdown output card -->
+      <rect x="262" y="24" width="194" height="202" rx="12" fill="#16161e" stroke="#22222e" stroke-width="1"/>
+
+      <!-- Card header -->
+      <rect x="270" y="32" width="178" height="28" rx="6" fill="#1e1e28"/>
+      <circle cx="282" cy="46" r="4" fill="#f0b429" opacity="0.8"/>
+      <text x="292" y="50" font-family="monospace" font-size="7.5" font-weight="600" fill="#e8e4db">thread_imswabhab_20260428.md</text>
+
+      <!-- Markdown content lines -->
+      <!-- H1 -->
+      <text x="278" y="80" font-family="monospace" font-size="7.5" font-weight="600" fill="#f0b429"># Swabhav (</text>
+      <text x="320" y="80" font-family="monospace" font-size="7.5" fill="#7eb8f7">@imswabhab</text>
+      <text x="363" y="80" font-family="monospace" font-size="7.5" fill="#f0b429">)</text>
+
+      <!-- Meta line -->
+      <text x="278" y="94" font-family="monospace" font-size="6.5" fill="#5e5a6a">*April 28, 2026*</text>
+      <text x="278" y="104" font-family="monospace" font-size="6.5" fill="#5e5a6a">Source: threads.com/...</text>
+
+      <!-- Divider -->
+      <text x="278" y="116" font-family="monospace" font-size="6.5" fill="#3a3848">---</text>
+
+      <!-- Post text lines -->
+      <rect x="278" y="122" width="120" height="5" rx="2" fill="#3a3848"/>
+      <rect x="278" y="132" width="150" height="5" rx="2" fill="#3a3848"/>
+      <rect x="278" y="142" width="100" height="5" rx="2" fill="#3a3848"/>
+
+      <!-- Separator -->
+      <text x="278" y="158" font-family="monospace" font-size="6.5" fill="#3a3848">---</text>
+
+      <rect x="278" y="164" width="140" height="5" rx="2" fill="#3a3848"/>
+      <rect x="278" y="174" width="110" height="5" rx="2" fill="#3a3848"/>
+      <rect x="278" y="184" width="160" height="5" rx="2" fill="#3a3848"/>
+      <rect x="278" y="194" width="90" height="5" rx="2" fill="#3a3848"/>
+      <rect x="278" y="204" width="130" height="5" rx="2" fill="#3a3848"/>
+
+      <!-- Bottom bar with actions -->
+      <rect x="262" y="226" width="194" height="38" rx="0" fill="#0e0e12"/>
+      <rect x="262" y="226" width="194" height="38" rx="12" fill="#0e0e12"/>
+      <rect x="262" y="226" width="194" height="18" fill="#0e0e12"/>
+
+      <!-- Action buttons in bottom bar -->
+      <rect x="270" y="232" width="44" height="24" rx="5" fill="#2a2200" stroke="rgba(240,180,41,0.25)" stroke-width="1"/>
+      <text x="292" y="248" font-family="monospace" font-size="6.5" font-weight="600" fill="#f0b429" text-anchor="middle">COPY</text>
+
+      <rect x="318" y="232" width="54" height="24" rx="5" fill="#2a2200" stroke="rgba(240,180,41,0.25)" stroke-width="1"/>
+      <text x="345" y="248" font-family="monospace" font-size="6.5" font-weight="600" fill="#f0b429" text-anchor="middle">COPY MD</text>
+
+      <rect x="376" y="232" width="36" height="24" rx="5" fill="#1a1a22" stroke="#2a2a38" stroke-width="1"/>
+      <text x="394" y="248" font-family="monospace" font-size="6.5" fill="#a09c98" text-anchor="middle">PDF</text>
+
+      <rect x="416" y="232" width="32" height="24" rx="5" fill="#1a1a22" stroke="#2a2a38" stroke-width="1"/>
+      <text x="432" y="248" font-family="monospace" font-size="6.5" fill="#a09c98" text-anchor="middle">MD</text>
+
+      <!-- Footer labels -->
+      <text x="262" y="290" font-family="monospace" font-size="7" fill="#3a3848" dx="8">AI-READY OUTPUT</text>
+      <circle cx="430" cy="285" r="3" fill="#4ade80"/>
+      <text x="436" y="289" font-family="monospace" font-size="7" fill="#4ade80">LOCAL</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ── Install ──────────────────────────────── -->
+<section class="install-section" id="install">
+  <div class="container">
+    <div class="install-card">
+      <div class="label">Quick Install</div>
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:20px;">
+        No build step. Load directly in Chrome as an unpacked extension.
+      </p>
+      <div class="install-steps">
+        <div class="install-step">
+          <span class="install-step-num">1</span>
+          <span>Download or clone the repository from GitHub</span>
+        </div>
+        <div class="install-step">
+          <span class="install-step-num">2</span>
+          <span>Open <strong>chrome://extensions/</strong> and enable Developer mode</span>
+        </div>
+        <div class="install-step">
+          <span class="install-step-num">3</span>
+          <span>Click <strong>Load unpacked</strong> and select the project folder</span>
+        </div>
+        <div class="install-step">
+          <span class="install-step-num">4</span>
+          <span>Browse to any Threads post and click the Threadmark icon</span>
+        </div>
+      </div>
+      <div class="install-code" style="margin-top:20px;">
+        <code>
+          <span class="prompt">$</span> git clone <span class="url">https://github.com/blacklogos/threadmark</span>
+        </code>
+        <button class="copy-btn" onclick="copyInstall(this)" data-text="git clone https://github.com/blacklogos/threadmark">Copy</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Features ────────────────────────────── -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Everything you need to<br><em>extract the signal</em></h2>
+      <p>From multi-post threads to image downloads — Threadmark handles the full pipeline.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-num">01</div>
+        <h3>Copy for AI</h3>
+        <p>One click puts clean Markdown on your clipboard — ready to paste into Claude, ChatGPT, Gemini, or any AI tool. Author metadata included.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">02</div>
+        <h3>Full Thread Extraction</h3>
+        <p>Captures all posts in a multi-part thread. Handles the current Threads.com DOM with span[dir=auto] and inverted author-link filtering.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">03</div>
+        <h3>Formatted Preview</h3>
+        <p>Opens a dedicated preview tab with author card, word count, reading time. Toggle edit mode to prune content before exporting.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">04</div>
+        <h3>Export Anywhere</h3>
+        <p>Save as HTML (self-contained), Markdown, plain text, or PDF — each with consistent filenames and automatic source attribution.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">05</div>
+        <h3>Image Download</h3>
+        <p>Detects post images even on photo-only threads. Bulk downloads with deterministic filenames. CDN proxy for blocked assets.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">06</div>
+        <h3>Privacy First</h3>
+        <p>100% local. No server, no tracking, no analytics. Your content never leaves your browser. Open source and auditable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── How It Works ─────────────────────────── -->
+<section class="how-it-works" id="how">
+  <div class="container">
+    <div class="section-heading">
+      <h2>From scroll to signal<br><em>in four steps</em></h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Open a Thread</h3>
+        <p>Browse to any post on threads.com or threads.net. Scroll to load the full thread.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Click Threadmark</h3>
+        <p>Hit the extension icon in your Chrome toolbar. Threadmark extracts the full thread automatically.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Choose Action</h3>
+        <p>Copy for AI puts Markdown on your clipboard. Preview opens the formatted view. Download saves a file.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Paste & Create</h3>
+        <p>Drop the Markdown into your AI tool, editor, or note-taking app. Clean, structured, ready to use.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Tech Stack ────────────────────────────── -->
+<section class="tech">
+  <div class="container">
+    <div class="tech-inner">
+      <div class="tech-item">
+        <div class="tech-label">Runtime</div>
+        <div class="tech-name">JavaScript</div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-label">Platform</div>
+        <div class="tech-name">Chrome MV3</div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-label">Architecture</div>
+        <div class="tech-name">Service Worker</div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-label">Dependencies</div>
+        <div class="tech-name">Zero</div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-label">License</div>
+        <div class="tech-name">MIT</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ──────────────────────────────────── -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Frequently Asked Questions</h2>
+      <p>Everything you need to know about Threadmark.</p>
+    </div>
+    <div class="faq-grid">
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          What does Threadmark do?
+          <span class="faq-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></span>
+        </button>
+        <div class="faq-a"><p>Threadmark extracts Threads.com posts into clean Markdown, HTML, or plain text — full threads, author info, images, and metadata — making social content AI-ready in one click. Everything runs locally; nothing leaves your browser.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          How do I use Threads posts with Claude or ChatGPT?
+          <span class="faq-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></span>
+        </button>
+        <div class="faq-a"><p>Open any Threads post, click the Threadmark icon, then click <strong>Copy for AI</strong>. Clean Markdown lands on your clipboard — paste it into Claude, ChatGPT, Gemini, Perplexity, or any AI tool. No reformatting needed.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          Does it work on multi-post threads?
+          <span class="faq-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></span>
+        </button>
+        <div class="faq-a"><p>Yes. Threadmark extracts all posts in a thread in order, cleanly separated with author metadata and post dividers. Each post is individually attributed so the AI understands the conversation structure.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          Does Threadmark send my data anywhere?
+          <span class="faq-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></span>
+        </button>
+        <div class="faq-a"><p>No. There is no backend server, no analytics, no tracking, and no account required. Your Threads content never leaves your machine.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          Can I download images from Threads posts?
+          <span class="faq-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></span>
+        </button>
+        <div class="faq-a"><p>Yes. Open the Preview tab and click <strong>Images</strong> to bulk-download all media. A service worker proxy fetches CDN-blocked assets from fbcdn.net and cdninstagram.com so images download reliably.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          What export formats are supported?
+          <span class="faq-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></span>
+        </button>
+        <div class="faq-a"><p>Markdown (.md), plain text (.txt), rich HTML (.html) as a self-contained archive, and PDF via the browser print dialog. You can also copy Markdown or plain text directly to clipboard with one click.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          How do I save a Threads post as Markdown?
+          <span class="faq-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></span>
+        </button>
+        <div class="faq-a"><p>Click the Threadmark icon → <strong>Preview</strong>. In the preview tab, press <kbd>Shift+M</kbd> or click <strong>Save MD</strong> to download a .md file of the full thread.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          Does it work on threads.net and threads.com?
+          <span class="faq-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></span>
+        </button>
+        <div class="faq-a"><p>Yes. Threadmark has host permissions for both <code>threads.com</code> and <code>threads.net</code> and works on both domains.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          Is Threadmark free and open source?
+          <span class="faq-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></span>
+        </button>
+        <div class="faq-a"><p>Yes. Threadmark is free, MIT-licensed, and open source. Source code is on <a href="https://github.com/blacklogos/threadmark" target="_blank" rel="noopener">GitHub</a>.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          What if Threadmark stops working?
+          <span class="faq-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></span>
+        </button>
+        <div class="faq-a"><p>Refresh the Threads page and try again. If the issue persists, Threads may have updated their DOM. <a href="https://github.com/blacklogos/threadmark/issues" target="_blank" rel="noopener">Open an issue</a> with the thread URL and it will be fixed.</p></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-credits">
+        © 2026 Threadmark · MIT License · <em>Turn threads into tools.</em>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/blacklogos/threadmark" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/blacklogos/threadmark/releases" target="_blank" rel="noopener">Releases</a>
+        <a href="https://github.com/blacklogos/threadmark/issues" target="_blank" rel="noopener">Issues</a>
+        <a href="https://cc4.marketing/?utm_source=threadmark&utm_medium=footer&utm_campaign=footer-donate#donate" target="_blank" rel="noopener">Support</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Copy install command
+  function copyInstall(btn) {
+    const text = btn.getAttribute('data-text');
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    }).catch(() => {
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+        document.body.appendChild(ta); ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.textContent = 'Copied!'; btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      } catch (_) {}
+    });
+  }
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      // close all
+      document.querySelectorAll('.faq-item.open').forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+</script>
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e6e677830f8047b49f5738cba4546263"}'></script><!-- Cloudflare Pages Analytics --><!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e6e677830f8047b49f5738cba4546263"}'></script><!-- Cloudflare Pages Analytics --></body>
+</html>
