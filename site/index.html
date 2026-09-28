@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Threadmark — Turn Threads posts into AI-ready Markdown</title>
-  <meta name="description" content="Threadmark is a free Chrome extension that extracts Threads.com posts into clean Markdown, HTML, or plain text — AI-ready in one click. No server. No tracking. 100% local.">
+  <meta name="description" content="Threadmark is a free Chrome extension that extracts Threads.com posts into clean Markdown, HTML, or plain text — AI-ready in one click. No server, no account. 100% local.">
   <meta name="keywords" content="Threadmark, Threads chrome extension, save threads posts, threads to markdown, threads to html, AI content extraction, Threads.com extension, copy threads for AI, ChatGPT threads, Claude threads">
   <meta name="robots" content="index, follow">
   <meta name="author" content="blacklogos">
@@ -27,27 +27,46 @@
 
   <!-- Structured Data -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Threadmark",
-    "applicationCategory": "BrowserApplication",
-    "operatingSystem": "Chrome",
-    "url": "https://threadmark.cc4.marketing/",
-    "description": "Chrome extension that extracts Threads.com posts into clean Markdown, HTML, or plain text — AI-ready in one click.",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "author": { "@type": "Person", "name": "blacklogos", "url": "https://github.com/blacklogos" },
-    "softwareVersion": "0.4.0",
-    "featureList": [
-      "One-click Markdown copy for AI tools",
-      "Full multi-post thread extraction",
-      "Formatted preview tab with edit mode",
-      "Export as HTML, Markdown, TXT, or PDF",
-      "Bulk image download",
-      "100% local — no server, no tracking"
-    ],
-    "codeRepository": "https://github.com/blacklogos/threadmark"
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Threadmark",
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "Chrome",
+  "url": "https://threadmark.cc4.marketing/",
+  "description": "Chrome extension that extracts Threads.com posts into clean Markdown, HTML, or plain text — AI-ready in one click.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "blacklogos",
+    "url": "https://github.com/blacklogos"
+  },
+  "softwareVersion": "0.4.0",
+  "featureList": [
+    "One-click Markdown copy for AI tools",
+    "Full multi-post thread extraction",
+    "Formatted preview tab with edit mode",
+    "Export as HTML, Markdown, TXT, or PDF",
+    "Bulk image download",
+    "100% local, no server, no tracking in the extension"
+  ],
+  "codeRepository": "https://github.com/blacklogos/threadmark",
+  "publisher": {
+    "@type": "Organization",
+    "name": "CC4.Marketing",
+    "url": "https://cc4.marketing/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://cc4.marketing/apple-touch-icon.png",
+      "width": 180,
+      "height": 180
+    }
   }
+}
   </script>
   <script type="application/ld+json">
   {
@@ -72,7 +91,7 @@
       {
         "@type": "Question",
         "name": "Does Threadmark send my data anywhere?",
-        "acceptedAnswer": { "@type": "Answer", "text": "No. Threadmark runs 100% in your browser. Your Threads content never leaves your machine. There is no backend server, no analytics, no tracking, and no account required." }
+        "acceptedAnswer": { "@type": "Answer", "text": "No. Threadmark runs 100% in your browser. Your Threads content never leaves your machine. There is no backend server and no account required, and the extension has no analytics or tracking. This website only counts anonymous page views, with no cookies." }
       },
       {
         "@type": "Question",
@@ -552,6 +571,22 @@
       .faq-grid { grid-template-columns: 1fr; }
     }
   </style>
+<!-- cc4-analytics:start -->
+<script>
+  // Cookieless page counts only (first-party ledger). No GA, no Plausible, no cookies.
+  if (location.hostname === 'threadmark.cc4.marketing') {
+    var cc4l = document.createElement('script'); cc4l.defer = true;
+    cc4l.setAttribute('data-site', 'threadmark.cc4.marketing'); cc4l.src = 'https://s.cc4.marketing/beacon.js';
+    document.head.appendChild(cc4l);
+  }
+</script>
+<!-- cc4-analytics:end -->
+<!-- cc4-og-image:start -->
+<meta property="og:image" content="https://threadmark.cc4.marketing/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="https://threadmark.cc4.marketing/og-image.png">
+<!-- cc4-og-image:end -->
 </head>
 <body>
 
@@ -800,7 +835,7 @@
       <div class="feature-card">
         <div class="feature-num">06</div>
         <h3>Privacy First</h3>
-        <p>100% local. No server, no tracking, no analytics. Your content never leaves your browser. Open source and auditable.</p>
+        <p>100% local. No server, and no tracking or analytics in the extension. Your content never leaves your browser. Open source and auditable.</p>
       </div>
     </div>
   </div>
@@ -903,7 +938,7 @@
           Does Threadmark send my data anywhere?
           <span class="faq-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></span>
         </button>
-        <div class="faq-a"><p>No. There is no backend server, no analytics, no tracking, and no account required. Your Threads content never leaves your machine.</p></div>
+        <div class="faq-a"><p>No. There is no backend server and no account required, and the extension has no analytics or tracking. Your Threads content never leaves your machine. This website only counts anonymous page views, with no cookies.</p></div>
       </div>
 
       <div class="faq-item">
@@ -1021,5 +1056,10 @@
     });
   });
 </script>
-<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e6e677830f8047b49f5738cba4546263"}'></script><!-- Cloudflare Pages Analytics --><!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e6e677830f8047b49f5738cba4546263"}'></script><!-- Cloudflare Pages Analytics --></body>
+<!-- cc4-hub-link:start -->
+<p style="text-align:center;font-size:13px;opacity:.75;margin:16px 0">
+  A free tool from <a href="https://cc4.marketing/?utm_source=threadmark&amp;utm_medium=footer&amp;utm_campaign=hub-link">cc4.marketing</a>, the free Claude Code course for marketers.
+</p>
+<!-- cc4-hub-link:end -->
+</body>
 </html>

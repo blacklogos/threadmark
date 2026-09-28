@@ -1,0 +1,57 @@
+# Threadmark
+
+> Threadmark is a free Chrome extension that extracts Threads.com posts into clean Markdown, HTML, or plain text — AI-ready in one click. No server, no account. 100% local.
+
+Threadmark is a free tool published by CC4.Marketing (https://cc4.marketing/), the free Claude Code course for marketers.
+
+## Pages
+
+- [Threadmark](https://threadmark.cc4.marketing/)
+
+## FAQ
+
+### What does Threadmark do?
+
+Threadmark is a free Chrome extension that extracts Threads.com posts into clean Markdown, HTML, or plain text. It captures full multi-post threads including author info, images, and metadata — making social content AI-ready in one click. All processing happens locally in your browser; nothing is sent to any server.
+
+### How do I use Threads posts with Claude, ChatGPT, or Gemini?
+
+Install Threadmark from GitHub, open any Threads post, and click 'Copy for AI'. Clean Markdown is instantly on your clipboard — paste it directly into Claude, ChatGPT, Gemini, Perplexity, or any AI tool. No reformatting needed.
+
+### Does Threadmark work with multi-post threads?
+
+Yes. Threadmark extracts all posts in a thread in order, cleanly separated with author metadata and post dividers. Each post is individually attributed so the AI understands the conversation structure.
+
+### Does Threadmark send my data anywhere?
+
+No. Threadmark runs 100% in your browser. Your Threads content never leaves your machine. There is no backend server and no account required, and the extension has no analytics or tracking. This website only counts anonymous page views, with no cookies.
+
+### Can Threadmark download images from Threads posts?
+
+Yes. Open the Preview tab and click 'Images' to bulk-download all media from a thread. Threadmark uses a service worker proxy to fetch CDN-blocked assets from fbcdn.net and cdninstagram.com, so images load reliably even when direct browser requests are blocked.
+
+### What export formats does Threadmark support?
+
+Threadmark supports four export formats: Markdown (.md) for AI tools and note-taking apps, plain text (.txt), rich HTML (.html) as a self-contained archive, and PDF via the browser print dialog. You can also copy Markdown or plain text directly to the clipboard.
+
+### How do I save a Threads post as Markdown?
+
+Install Threadmark, navigate to any Threads post, click the extension icon, then click 'Preview'. In the preview tab, press Shift+M or click 'Save MD' to download a .md file of the full thread.
+
+### Does Threadmark work on threads.net and threads.com?
+
+Yes. Threadmark has host permissions for both threads.com and threads.net and works on both domains.
+
+### Is Threadmark free and open source?
+
+Yes. Threadmark is completely free and open source under the MIT license. The source code is available on GitHub at https://github.com/blacklogos/threadmark.
+
+### What should I do if Threadmark stops working?
+
+If extraction fails, refresh the Threads page and try again. If the issue persists, Threads may have updated their DOM structure. Open an issue on GitHub with the thread URL and the extension will be updated.
+
+
+## Related
+
+- [CC4.Marketing, free Claude Code course for marketers](https://cc4.marketing/)
+- [All cc4.marketing tools](https://cc4.marketing/llms.txt)
